@@ -1,7 +1,7 @@
 require("dotenv").config();
 // varibles
 var keys = require("./keys.js");
-var request = require("request");
+var request = require("axios");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 var command = process.argv[2];
@@ -32,26 +32,22 @@ function commandInputs (command, input){
 }
 
 function concertInfo (input){
-    var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";
-    console.log(input);
-
-    request (queryUrl, function(error,response, body){
-
-
-        if (!error && response.statusCode === 200){
-            var concertInfo = JSON.parse(body);
-            var concertDate = concertInfo[0].datetime;
+    axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
+    .then(function(response){
+        for (i = 0; i < concertInfo.length; i++){
+    
+            var concertDate = response.data[0].datetime;
             var momentDate = moment().format("L");
-
-            for (i = 0; i < concertInfo.length; i++){
-
-            console.log("Venue Name: " + concertInfo[0].venue.name + "Location: " + concertInfo[0].venue.city + concertInfo.venue.country + "Date: " + momentDate);
-            }
-
+            var concertInfo = 
+            "Venue Name: " + response.data[i].venue.name + "Location: " + response.data[i].venue.city + "Date: " + momentDate;
+            console.log(concertInfo)
         }
 
     })
-        
+    .catch(function(error){
+        console.log(error)
+    })
+
 }
 
 function songInfo (input){
@@ -60,36 +56,44 @@ function songInfo (input){
         input === "The Sign";
     }
 
-    spotify.search({type: "track", query: input}, function (err, data){
-        if (err){
-            return console.log("Error. Please try again!" + err);
-        }
-        else {
-            for (i = 0; i < songInfo; i++){
+    spotify.search({type: "track", query: input}).then(function(response){
 
-                var songInfo = data.tracks.items[i];
-                console.log("Artist: " + songInfo.artsit[0].name + "Song Name: " + songInfo.name + "Album Name: " + songInfo.album.name + "Song Link: " + songInfo.preview_url)
-            }
-        }
-    })
+        for (i = 0; i < songInfo; i++){
+    
+            var songInfo = 
+            "Artist: " + response.tracks.items[i].artist[0].name + "Song Name: " + response.tracks.items[i].name + "Album Name: " + response.tracks.items[i].album.name + "Song Link: " + repsonse.tracks.items[i].preview_url;
+            console.log(songInfo);
+    
+
+        
 }
 
 function movieInfo(input){
     if (input === undefined){
         input === "Mr. Nobody"
     }
-    var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
-    console.log(queryUrl);
+    axios.get("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy")
+    .then(function(response){
+        var movieInfo =
+        "Title: " + movieInfo.title + "Year: " + movieInfo.released + "Rating: " + movieInfo.imdbrating + "Rotten Tomatos: " + movieInfo.ratings[1].value + "Country: " + movieInfo.country + "Language: " + movieInfo.language + "Plot: " + movieInfo.plot + "Actors: " + movieInfo.actors;
+        console.log(movieInfo)
 
-    request (queryUrl, function (error, response, body){
+    })
+    .catch(function(error){
+        console.log(error);
+    })
 
-        if (!error && response.statusCode === 200){
+}
+    
 
-            var movieInfo = JSON.parse(body);
 
-            for (i = 0; i < movieInfo.length; i++){
-                console.log("Title: " + movieInfo.title + "Year: " + movieInfo.released + "Rating: " + movieInfo.imdbrating + "Rotten Tomatos: " + movieInfo.ratings[1].value + "Country: " + movieInfo.country + "Language: " + movieInfo.language + "Plot: " + movieInfo.plot + "Actors: " + movieInfo.actors);
-            }
+function doInfo(input){
+    fs.readFile("random.txt", "utf8", function(err,data){
+        if (err){
+            return console.log("Error. Please try again!"+ err);
+
+            var dataArr = data.split(",");
+            input(dataArr[0], dataArr[1]);
         }
     })
 }
