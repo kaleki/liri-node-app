@@ -1,7 +1,7 @@
 require("dotenv").config();
 // varibles
 var keys = require("./keys.js");
-var request = require("axios");
+var axios = require("axios");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 var command = process.argv[2];
@@ -34,7 +34,7 @@ function commandInputs (command, input){
 function concertInfo (input){
     axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
     .then(function(response){
-        for (i = 0; i < concertInfo.length; i++){
+        for (i = 0; i < response.data.length; i++){
     
             var concertDate = response.data[0].datetime;
             var momentDate = moment().format("L");
