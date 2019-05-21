@@ -30,3 +30,26 @@ function commandInputs (command, input){
         default: console.log("Error. Please try again!")
     }
 }
+
+function concerIt (input){
+    var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";
+    console.log(input);
+
+    request (queryUrl, function(error,response, body){
+
+
+        if (!error && response.statusCode === 200){
+            var concertInfo = JSON.parse(body);
+            var concertDate = concertInfo[0].datetime;
+            var momentDate = moment().format("L");
+
+            console.log("Venue Name: " + concertInfo[0].venue.name + "Location: " + concertInfo[0].venue.city + concertInfo.venue.country + "Date: " + momentDate);
+        }
+
+    })
+        
+}
+
+
+    
+

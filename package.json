@@ -19,6 +19,10 @@
   "homepage": "https://github.com/kaleki/liri-node-app#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "request": "^2.88.0"
+    "dotenv": "^8.0.0",
+    "moment": "^2.24.0",
+    "node-spotify-api": "^1.1.1",
+    "request": "^2.88.0",
+    "save": "^2.4.0"
   }
 }
