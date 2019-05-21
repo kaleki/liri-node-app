@@ -90,7 +90,7 @@ function movieInfo(input){
 function doInfo(input){
     fs.readFile("random.txt", "utf8", function(err,data){
         if (err){
-            return console.log("Error. Please try again!"+ err);
+            return console.log(err);
 
             var dataArr = data.split(",");
             input(dataArr[0], dataArr[1]);
@@ -100,4 +100,5 @@ function doInfo(input){
 
 
     
+})}
 
