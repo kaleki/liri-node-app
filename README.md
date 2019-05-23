@@ -1,6 +1,7 @@
 # liri-node-app
 
 #About
+
 Liri is like Siri. Liri is a Language Interpretation Recogniton Interface. It is a command line node app that takes in parmeters and supplies back data.
 
 #Instructions
@@ -15,7 +16,7 @@ Run concert-this command:
 
 node liri.js concert-this <name of artist or band>
 
-assets/concert-it.png
+Markdown!(assets/concert-it.png)
 
 Run spotify-this-song command:
 
