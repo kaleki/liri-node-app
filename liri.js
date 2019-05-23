@@ -5,6 +5,8 @@ var axios = require("axios");
 var Spotify = require("node-spotify-api");
 var moment = require("moment")
 var spotify = new Spotify(keys.spotify);
+var fs = require("fs");
+console.log(keys)
 var command = process.argv[2];
 var input = process.argv[3];
 
@@ -24,7 +26,7 @@ function commandInputs (command, input){
         movieInfo (input);
         break;
 
-        case ("do-what-says"):
+        case ("do-what-it-says"):
         doInfo (input);
         break;
 
@@ -56,9 +58,9 @@ function songInfo (input){
     if (input === undefined){
         input === "The Sign";
     }
-
-    spotify.search({type: "track", query: input}).then(function(response){
-
+    console.log(input)
+    spotify.search({type: "track", query: input},function(err,data){
+        console.log(data)
         for (i = 0; i < songInfo; i++){
     
             var songInfo = 
@@ -66,7 +68,7 @@ function songInfo (input){
             console.log(songInfo);
     
 
-        
+        }})       
 }
 
 function movieInfo(input){
@@ -75,8 +77,9 @@ function movieInfo(input){
     }
     axios.get("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy")
     .then(function(response){
+        // console.log(response.data)
         var movieInfo =
-        "Title: " + movieInfo.title + "Year: " + movieInfo.released + "Rating: " + movieInfo.imdbrating + "Rotten Tomatos: " + movieInfo.ratings[1].value + "Country: " + movieInfo.country + "Language: " + movieInfo.language + "Plot: " + movieInfo.plot + "Actors: " + movieInfo.actors;
+        "Title: " + response.data.Title + "Year: " + response.data.Released + "Rating: " + response.data.imdbRating + "Rotten Tomatos: " + response.data.Ratings[1].Value+ "Country: " + response.data.Country + "Language: " + response.data.Language + "Plot: " + response.data.Plot + "Actors: " + response.data.Actors;
         console.log(movieInfo)
 
     })
@@ -93,13 +96,10 @@ function doInfo(input){
         if (err){
             return console.log(err);
 
-            var dataArr = data.split(",");
-            input(dataArr[0], dataArr[1]);
         }
+        console.log(data)
+        var dataArr = data.split(",");
+        commandInputs(dataArr[0], dataArr[1]);
     })
 }
-
-
-    
-})}
 

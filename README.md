@@ -15,6 +15,8 @@ Run concert-this command:
 
 node liri.js concert-this <name of artist or band>
 
+assets/concert-it.png
+
 Run spotify-this-song command:
 
 node liri.js spotify-this-song <name of song>
